@@ -118,3 +118,10 @@ float HybridAStar::hybridAStar::aStar(Node2D &start, Node2D &goal)
     return 1000;
 }
 
+
+
+void hybridAStar::updateH(Node3D &start, const Node3D &goal, Node2D *nodes2D, float *dubinsLookup)
+{
+
+}
+

@@ -14,6 +14,7 @@ add_library(
         src/node.cpp
         src/hybridAStar.cpp
         src/CollisionDetection.cpp
+        src/ReedsSheppPath.cpp
 )
 
 add_executable(hybrid_astar main.cpp)
@@ -24,5 +25,8 @@ target_link_libraries(test_a_star planner ${OpenCV_LIBS})
 
 add_executable(test_map test/test_map.cpp)
 target_link_libraries(test_map planner ${OpenCV_LIBS})
+
+add_executable(test_RS test/test_ReedsSheppPath.cpp)
+target_link_libraries(test_RS planner ${OpenCV_LIBS})
 
 
