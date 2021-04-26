@@ -29,4 +29,6 @@ target_link_libraries(test_map planner ${OpenCV_LIBS})
 add_executable(test_RS test/test_ReedsSheppPath.cpp)
 target_link_libraries(test_RS planner ${OpenCV_LIBS})
 
+add_executable(test_hybrid_aStar test/test_hybrid_aStar.cpp)
+target_link_libraries(test_hybrid_aStar planner ${OpenCV_LIBS})
 

@@ -2,6 +2,8 @@
 #define HYBRID_ASTAR_REEDSSHEPPPATH_H
 
 #include <boost/math/constants/constants.hpp>
+#include "CollisionDetection.h"
+#include "node.h"
 
 namespace HybridAStar
 {
@@ -47,6 +49,7 @@ namespace HybridAStar
         double distance(pos start,pos end);
         void interpolate(const pos *from, const ReedsSheppPath &path, double t,
                     pos *state) const;
+        bool isTraversable(Node3D* start,ReedsShepp::ReedsSheppPath *path,CollisionDetection *map) const;
     private:
         float rho_;
 

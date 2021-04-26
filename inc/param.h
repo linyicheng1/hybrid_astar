@@ -21,6 +21,34 @@ namespace param {
     static const float deltaHeadingNegRad = 2 * M_PI - deltaHeadingRad;
 /// [m] --- The cell size of the 2D grid of the world
     static const float cellSize = 1; //在2D网格中cell的大小
-
+    static const float tieBreaker = 0.01;
+    static const int positionResolution = 10;//每个cell里的离散位置数量的平方根
+    static const int positions = positionResolution * positionResolution;//位置的数量
+    struct relPos {//相对于中心的位置：即以中心为坐标原点
+        /// the x position relative to the center
+        int x;
+        /// the y position relative to the center
+        int y;
+    };
+    /// A structure capturing the lookup for each theta configuration
+    struct config {//用以获取每个theta的查找表的结构体
+        /// the number of cells occupied by this configuration of the vehicle
+        int length;//长度，
+        /*!
+           \var relPos pos[64]
+           \brief The maximum number of occupied cells
+           \todo needs to be dynamic
+        */
+        relPos pos[64];//这里为什么是64有待考证
+    };
+    static const float factor2D = sqrt(5) / sqrt(2) + 1;
+/// [#] --- A movement cost penalty for turning (choosing non straight motion primitives)
+    static const float penaltyTurning = 1.05;
+/// [#] --- A movement cost penalty for reversing (choosing motion primitives > 2)
+    static const float penaltyReversing = 2.0;
+/// [#] --- A movement cost penalty for change of direction (changing from primitives < 3 to primitives > 2)
+    static const float penaltyCOD = 2.0;
+    static const float dubinsShotDistance = 100;
+    static const float minRoadWidth = 2;
 }
 #endif //HYBRID_ASTAR_PARAM_H

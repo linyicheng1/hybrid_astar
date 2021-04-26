@@ -80,7 +80,7 @@ public:
     // CUSTOM OPERATORS
     /// Custom operator to compare nodes. Nodes are equal if their x and y position is the same.
     bool operator == (const Node2D& rhs) const;//节点比较函数，当两个节点的x,y一致时为同一节点
-
+    bool equal(const Node2D& rhs,float scale) const;
     // GRID CHECKING
     /// Validity check to test, whether the node is in the 2D array.
     // 节点检查函数，检查该节点是否在2D 数组里
@@ -90,7 +90,7 @@ public:
     // SUCCESSOR CREATION
     /// Creates a successor on a eight-connected grid.
     // 创建8-连接的suceessor
-    Node2D* createSuccessor(const int i);
+    Node2D* createSuccessor(const int i, float inv_scale);
 
     // CONSTANT VALUES
     /// Number of possible directions
@@ -128,7 +128,7 @@ private:
         Node3D(): Node3D(0, 0, 0, 0, 0, nullptr) {}
         /// Constructor for a node with the given arguments
         //通过给定参数构造节点
-        Node3D(float x, float y, float t, float g, float h, const Node3D* pred, int prim = 0) {
+        Node3D(float x, float y, float t, float g, float h, Node3D* pred, int prim = 0) {
             this->x = x;
             this->y = y;
             this->t = t;
@@ -163,7 +163,7 @@ private:
         /// determine whether the node is closed
         bool isClosed() const { return c; }
         /// determine whether the node is open
-        const Node3D* getPred() const { return pred; }
+        Node3D* getPred() { return pred; }
 
         // SETTER METHODS：设置方法，用新值替代旧值
         /// set the x position
@@ -183,8 +183,8 @@ private:
         /// close the node
         void close() { c = true; o = false; }
         /// set a pointer to the predecessor of the node
-        void setPred(const Node3D* pred) { this->pred = pred; }
-
+        void setPred(Node3D* pred) { this->pred = pred; }
+        void reset() {x=0;y=0;t=0;g=0;h=0;pred= nullptr;idx=-1; c = false; o = false; }
         // UPDATE METHODS
         /// Updates the cost-so-far for the node x' coming from its predecessor. It also discovers the node.
         void updateG();//更新从predecessor到该节点的 cost-so-far，同时标记该节点为已探查
@@ -235,7 +235,7 @@ private:
         /// the motion primitive of the node
         int prim;
         /// the predecessor pointer
-        const Node3D* pred;//祖先节点
+         Node3D* pred;//祖先节点
     };
 
 }
