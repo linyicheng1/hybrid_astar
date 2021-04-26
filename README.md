@@ -20,14 +20,12 @@
 
 成功运行结果为下图
 
-![a_star](pic/a_star.png)
-
+<img src="pic/a_star.png" alt="a_star" width="500" height="300" align="bottom" />
 ## ReedsShepp算法 
 `test/test_ReedsSheppPath.cpp`文件中给出ReedsShepp算法的运行示例，该算法提供了一个不考虑障碍物仅考虑运动学时的一个路径规划方法，在实际的混合A*算法中用于计算预计代价H，并尝试计算当前搜索点与目标点的路径，如果该路径没有障碍物则可以提前结束搜索。
 
 示例代码实际运行结果应该如下图
-![ReedsShepp](pic/RS.png)
-
+<img src="pic/RS.png" alt="ReedsShepp" width="500" height="300" align="bottom" />
 ### 依赖项目
 
 * opencv （读取地图文件，也可以自行定义地图数据，而不调用opencv）
