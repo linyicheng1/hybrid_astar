@@ -61,7 +61,7 @@ bool Node3D::isInRange(const Node3D& goal) const
     return (dx * dx) + (dy * dy) < param::dubinsShotDistance;//距离的平方和在100以内则认为可达
 }
 
-Node3D* Node3D::createSuccessor(const int i)
+Node3D* Node3D::createSuccessor(const int i,float inv_scale)
 {
     float xSucc;
     float ySucc;
@@ -69,14 +69,14 @@ Node3D* Node3D::createSuccessor(const int i)
 
     // calculate successor p ositions forward
     if (i < 3) {//前向 Successor
-        xSucc = x + dx[i] * cos(t) - dy[i] * sin(t);
-        ySucc = y + dx[i] * sin(t) + dy[i] * cos(t);
+        xSucc = x + dx[i] * cos(t) * inv_scale - dy[i] * sin(t) * inv_scale;
+        ySucc = y + dx[i] * sin(t) * inv_scale + dy[i] * cos(t) * inv_scale;
         tSucc = normalizeHeadingRad(t + dt[i]);
     }
         // backwards
     else {//后向 Successor
-        xSucc = x - dx[i - 3] * cos(t) - dy[i - 3] * sin(t);
-        ySucc = y - dx[i - 3] * sin(t) + dy[i - 3] * cos(t);
+        xSucc = x - dx[i - 3] * cos(t) * inv_scale - dy[i - 3] * sin(t) * inv_scale;
+        ySucc = y - dx[i - 3] * sin(t) * inv_scale + dy[i - 3] * cos(t) * inv_scale;
         tSucc = normalizeHeadingRad(t - dt[i - 3]);
     }
 

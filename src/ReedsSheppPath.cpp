@@ -348,13 +348,13 @@ namespace HybridAStar
 
     bool ReedsShepp::isTraversable(Node3D* start,ReedsShepp::ReedsSheppPath *path, CollisionDetection *map) const
     {
-        for(int i = 0;i < path->length()*2;i ++)
+        for(int i = 0;i < path->length()*3;i ++)
         {
-            float t = (float)(i) / (float)(path->length()*2);
+            float t = (float)(i) / (float)(path->length()*3);
             ReedsShepp::pos p;
             ReedsShepp::pos s(start->getX(),start->getY(),start->getT());
             interpolate(&s,*path,t,&p);
-            Node2D pt((int)p.x,(int)p.y,0,0, nullptr);
+            Node2D pt((int)(p.x),(int)(p.y),0,0, nullptr);
             pt.setIdx(map->getWidthSize());
             if(!map->isTraversable(&pt))
             {

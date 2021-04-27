@@ -2,7 +2,7 @@
 #define HYBRID_ASTAR_PARAM_H
 namespace param {
 /// [#] --- Limits the maximum search depth of the algorithm, possibly terminating without the solution
-    static const int iterations = 30000; //最大迭代次数
+    static const int iterations = 300000; //最大迭代次数
 /// [m] --- Uniformly adds a padding around the vehicle
     static const double bloating = 0; //膨胀范围
 /// [m] --- The width of the vehicle
@@ -10,7 +10,7 @@ namespace param {
 /// [m] --- The length of the vehicle
     static const double length = 2.65 + 2 * bloating;//车的长度
 /// [m] --- The minimum turning radius of the vehicle
-    static const float r = 6;//最小转弯半径
+    static const float r = 2;//最小转弯半径
 /// [m] --- The number of discretizations in heading
     static const int headings = 72;//车体朝向的离散数量
 /// [°] --- The discretization value of the heading (goal condition)

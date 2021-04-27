@@ -203,7 +203,7 @@ private:
 
         // SUCCESSOR CREATION
         /// Creates a successor in the continous space.
-        Node3D* createSuccessor(const int i);//在连续空间中创建successor
+        Node3D* createSuccessor(const int i,float inv_scale);//在连续空间中创建successor
 
         // CONSTANT VALUES
         /// Number of possible directions

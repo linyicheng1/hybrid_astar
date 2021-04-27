@@ -32,7 +32,7 @@ hybridAStar::~hybridAStar()
  * @param reverse
  * @return
  */
-HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node3D& goal)
+HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node3D& goal,float scale)
 {
     int iPred, iSucc;
     float newG;
@@ -42,6 +42,7 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
     }
     int dir = 6;
     int iterations = 0;//迭代计数
+    m_shootSuccess = false;
     // OPEN LIST AS BOOST IMPLEMENTATION
     typedef boost::heap::binomial_heap<Node3D*,
             boost::heap::compare<CompareNodes>
@@ -60,7 +61,7 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
     while (!open.empty())
     {
         nPred = open.top();
-        std::cout<<" point: x "<<nPred->getX()<<" y "<<nPred->getY()<<" T "<<nPred->getT()<<std::endl;
+        //std::cout<<" point: x "<<nPred->getX()<<" y "<<nPred->getY()<<" T "<<nPred->getT()<<std::endl;
         // set index
         iPred = nPred->setIdx(m_map->getWidthSize(), m_map->getHeightSize());//获取该点在nodes3D的索引 (前缀i表示index, n表示node)
         iterations++;//记录迭代次数
@@ -89,15 +90,19 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                 // is shot success
                 if(m_RS.isTraversable(nPred,&m_RS_path,m_map))
                 {
+                    m_shootSuccess = true;
                     goal.setPred(nPred);
+                    //m_RS.isTraversable(nPred,&m_RS_path,m_map);
                     return nPred;
+
                 }
             }
             for (int i = 0; i < dir; i++)
             {//每个方向都搜索
-                nSucc = nPred->createSuccessor(i);//找到下一个点
+                nSucc = nPred->createSuccessor(i,1/scale);//找到下一个点
                 iSucc = nSucc->setIdx(m_map->getWidthSize(), m_map->getHeightSize());//索引值
-                if (nSucc->isOnGrid(m_map->getWidthSize(), m_map->getHeightSize())
+
+                if (nSucc->isOnGrid(m_map->getWidth(), m_map->getHeight())
                 && m_map->isTraversable(nSucc))
                 {
                     // 确定新扩展的节点不在close list中，或者没有在之前遍历过
@@ -244,17 +249,21 @@ void hybridAStar::updateH(Node3D &start, const Node3D &goal)
     ReedsShepp::pos start_pt(start.getX(),start.getY(),start.getT());
     ReedsShepp::pos goal_pt(goal.getX(),goal.getY(),goal.getT());
     reedsSheppCost = (float)m_RS.distance(start_pt,goal_pt);
+    float s_x = start.getX();
+    float s_y = start.getY();
+    float g_x = goal.getX();
+    float g_y = goal.getY();
     // 2、A *
-//    Node2D start2d((int)start.getX(), (int)start.getY(), 0, 0, nullptr);
-//    Node2D goal2d((int)goal.getX(), (int)goal.getY(), 0, 0, nullptr);
-//    float G = aStar(start2d,goal2d,0.01);
-//    // 3、
-//    twoDoffset = sqrt( ((start.getX() - (float)((int)start.getX())) - (goal.getX() - (float)((int)goal.getX()))) *
-//                       ((start.getX() - (float)((int)start.getX())) - (goal.getX() - (float)((int)goal.getX()))) +
-//                       ((start.getY() - (float)((int)start.getY())) - (goal.getY() - (float)((int)goal.getY()))) *
-//                       ((start.getY() - (float)((int)start.getY())) - (goal.getY() - (float)((int)goal.getY())))
-//    );
-//    twoDCost = G - twoDoffset;
+    Node2D start2d((int)s_x, (int)s_y, 0, 0, nullptr);
+    Node2D goal2d((int)g_x, (int)g_y, 0, 0, nullptr);
+    float G = aStar(start2d,goal2d,0.1);
+    // 3、
+    twoDoffset = sqrt( ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) *
+                       ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) +
+                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y))) *
+                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y)))
+    );
+    twoDCost = (G - twoDoffset);
     start.setH(std::max(reedsSheppCost, twoDCost));
 }
 

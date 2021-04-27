@@ -19,11 +19,11 @@ void getConfiguration(const Node3D* node, float& x, float& y, float& t)
 
 HybridAStar::CollisionDetection::CollisionDetection(
         unsigned char *data, int width,
-        int height, int inv_resolution):m_inv_resolution(inv_resolution),
+        int height):
         m_height(height),m_width(width)
 {
-    m_map = new unsigned char[height*width*inv_resolution*inv_resolution];
-    memcpy(m_map,data,height*width*inv_resolution*inv_resolution*sizeof(unsigned char));
+    m_map = new unsigned char[height*width];
+    memcpy(m_map,data,height*width*sizeof(unsigned char));
 }
 
 bool HybridAStar::CollisionDetection::isTraversable(const Node3D* node)
@@ -32,7 +32,12 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node3D* node)
     float y;
     float t;
     getConfiguration(node, x, y, t);
-    int id = (int)y * m_width*m_inv_resolution + (int)x;
+    if(x > m_width  || x < 0 || y > m_height  || y <0)
+    {
+        return false;
+    }
+    //@TODO
+    int id = Node2D(x,y,0,0,nullptr).setIdx(getWidthSize());
     return m_map[id] > 250;
     //return configurationTest(x, y, t);
 }
@@ -45,6 +50,10 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node2D *node)
     float t;
     // assign values to the configuration
     getConfiguration(node, x, y, t);
+    if(x > m_width  || x < 0 || y > m_height  || y <0)
+    {
+        return false;
+    }
     return m_map[node->getIdx()] > 250;
 }
 
@@ -79,12 +88,11 @@ bool HybridAStar::CollisionDetection::configurationTest(float x, float y, float 
     return true;//所有检测都没有检测到被占用，说明没有障碍，可以通行
 }
 
-void HybridAStar::CollisionDetection::updateGrid(unsigned char *data, int width, int height, int inv_resolution)
+void HybridAStar::CollisionDetection::updateGrid(unsigned char *data, int width, int height)
 {
     delete m_map;
     m_width = width;
     m_height = height;
-    m_inv_resolution = inv_resolution;
-    m_map = new unsigned char[height*width*inv_resolution*inv_resolution];
-    memcpy(m_map,data,height*width*inv_resolution*inv_resolution*sizeof(unsigned char));
+    m_map = new unsigned char[height*width];
+    memcpy(m_map,data,height*width*sizeof(unsigned char));
 }
