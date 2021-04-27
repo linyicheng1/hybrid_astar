@@ -3,8 +3,9 @@
 
 ## 更新进度
 
-* 2021.4.5 添加原始的A*算法和地图读取代码，采用opencv库读取图片作为地图
-* 2021.4.6 添加ReedsShepp算法，
+* 2021.4.25 添加原始的A*算法和地图读取代码，采用opencv库读取图片作为地图
+* 2021.4.26 添加ReedsShepp算法
+* 2021.4.27 添加混合A*算法
 ## 用法
 
 ### 获取地图数据
@@ -29,6 +30,13 @@
 示例代码实际运行结果应该如下图
 
 <img src="pic/RS.png" alt="ReedsShepp" width="500" height="300" align="bottom" />
+
+
+### 混合A*算法
+`test/test_hybrid_aStar.cpp`文件提供了单纯运行混合A*star算法的示例，需要注意的是，这里发现原算法如果在较大的搜索空间内需要花费较多的时间进行搜索，因此在实现中添加了缩放系数，即A *和混合A *离散空间的大小，缩放系数为1时不缩放，为0.5时搜索空间减小为四分之一。
+
+<img src="pic/hybridAStar.png" alt="hybridAStar" width="500" height="300" align="bottom" />
+
 
 ### 依赖项目
 
