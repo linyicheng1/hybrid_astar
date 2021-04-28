@@ -45,9 +45,9 @@ namespace param {
 /// [#] --- A movement cost penalty for turning (choosing non straight motion primitives)
     static const float penaltyTurning = 1.05;
 /// [#] --- A movement cost penalty for reversing (choosing motion primitives > 2)
-    static const float penaltyReversing = 2.0;
+    static const float penaltyReversing = 25.0;
 /// [#] --- A movement cost penalty for change of direction (changing from primitives < 3 to primitives > 2)
-    static const float penaltyCOD = 2.0;
+    static const float penaltyCOD = 50.0;
     static const float dubinsShotDistance = 100;
     static const float minRoadWidth = 10;
 }

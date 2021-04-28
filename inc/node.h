@@ -158,6 +158,7 @@ private:
         int getIdx() const { return idx; }
         /// get the number associated with the motion primitive of the node
         int getPrim() const { return prim; }
+        void setPrim(int p) {prim = p;}
         /// determine whether the node is open
         bool isOpen() const { return o; }
         /// determine whether the node is closed

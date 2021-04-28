@@ -92,19 +92,48 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                 {
                     m_shootSuccess = true;
                     goal.setPred(nPred);
+                    bool fix[4] = {false};
+                    for(int i = 1;i < 5;i ++)
+                    {
+                        if((m_RS_path.length_[i-1] > 0 && m_RS_path.length_[i] < 0) ||
+                           (m_RS_path.length_[i-1] < 0 && m_RS_path.length_[i] > 0))
+                        {
+                            fix[i-1] = true;
+                        }
+                    }
+                    int seg_num = 0;
+                    auto seg_length = (float)abs(m_RS_path.length_[0]);
+                    bool last_fix = false;
                     for(int i = 0;i < m_RS_path.length()*2;i ++)
                     {
+                        int prim = -1;
                         float t = (float)i / (m_RS_path.length()*2);
                         ReedsShepp::pos p;
                         ReedsShepp::pos st(goal.getPred()->getX(),goal.getPred()->getY(),goal.getPred()->getT());
                         interpolate(&st,t,&p);
-                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred,-1);
+                        if(t > seg_length / m_RS_path.length())
+                        {
+                            if(fix[seg_num])
+                            {
+                                prim = -2;
+                                nPred->setPrim(-2);
+                                last_fix = true;
+                            }
+                            seg_num ++;
+                            seg_length += (float)abs(m_RS_path.length_[seg_num]);
+                        }
+                        if(last_fix && prim != -2)
+                        {
+                            prim = -2;
+                            last_fix = false;
+                        }
+                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred,prim);
                         nPred = tmp_node;
                     }
                     return nPred;
                 }
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {//每个方向都搜索
                 nSucc = nPred->createSuccessor(i,1/scale);//找到下一个点
                 iSucc = nSucc->setIdx(m_map->getWidthSize(), m_map->getHeightSize());//索引值

@@ -7,7 +7,11 @@ using namespace HybridAStar;
 //交点检测函数
 inline bool isCusp(std::vector<Node3D> path, int i)
 {
-    if(path[i].getPrim() < 0)
+    if(path[i].getPrim() == -1)
+    {
+        return false;
+    }
+    else if(path[i].getPrim() == -2)
     {
         return true;
     }

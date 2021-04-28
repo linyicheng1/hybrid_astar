@@ -85,9 +85,11 @@ Node3D* Node3D::createSuccessor(const int i,float inv_scale)
 void Node3D::updateG()
 {
     // forward driving
-    if (prim < 3) {//前进情况
+    if (prim < 3)
+    {//前进情况
         // penalize turning
-        if (pred->prim != prim) {//方向发生改变时
+        if (pred->prim != prim)
+        {//方向发生改变时
             // penalize change of direction
             if (pred->prim > 2) {
                 g += dx[0] * param::penaltyTurning * param::penaltyCOD;//改变方向的惩罚
