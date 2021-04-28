@@ -42,7 +42,7 @@
 
 `test/test_dynamicVoronoi.cpp`文件提供了一个计算Voronoi图的一个示例，原始实现中考虑了动态的情况，而在本实现中则进行了一定的简化，只考虑静态地图，毕竟动态部分交给局部路径规划即可。最终在平滑算法中使用计算得到的结果。
 
-<img src="pic/result.pmg" alt="result" width="500" height="300" align="bottom" />
+<img src="pic/result.pgm" alt="result" width="500" height="300" align="bottom" />
 
 ### 基于梯度信息的路径平滑
 `test/test_smooth.cpp`对混合A* 算法进行了平滑，得到相较于原始路径更优的结果，并且优化过程耗时不大，是一个性价比较高的操作。
