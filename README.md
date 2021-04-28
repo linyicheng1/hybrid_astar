@@ -6,6 +6,7 @@
 * 2021.4.25 添加原始的A*算法和地图读取代码，采用opencv库读取图片作为地图
 * 2021.4.26 添加ReedsShepp算法
 * 2021.4.27 添加混合A*算法
+* 2021.4.28 添加路径平滑算法，以及voronoi图
 ## 用法
 
 ### 获取地图数据
@@ -37,6 +38,16 @@
 
 <img src="pic/hybridAStar.png" alt="hybridAStar" width="500" height="300" align="bottom" />
 
+### voronoi图
+
+`test/test_dynamicVoronoi.cpp`文件提供了一个计算Voronoi图的一个示例，原始实现中考虑了动态的情况，而在本实现中则进行了一定的简化，只考虑静态地图，毕竟动态部分交给局部路径规划即可。最终在平滑算法中使用计算得到的结果。
+
+<img src="pic/result.png" alt="result" width="500" height="300" align="bottom" />
+
+### 基于梯度信息的路径平滑
+`test/test_smooth.cpp`对混合A* 算法进行了平滑，得到相较于原始路径更优的结果，并且优化过程耗时不大，是一个性价比较高的操作。
+
+<img src="pic/smooth.png" alt="smooth" width="500" height="300" align="bottom" />
 
 ### 依赖项目
 
