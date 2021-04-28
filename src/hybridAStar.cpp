@@ -92,9 +92,16 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                 {
                     m_shootSuccess = true;
                     goal.setPred(nPred);
-                    //m_RS.isTraversable(nPred,&m_RS_path,m_map);
+                    for(int i = 0;i < m_RS_path.length()*2;i ++)
+                    {
+                        float t = (float)i / (m_RS_path.length()*2);
+                        ReedsShepp::pos p;
+                        ReedsShepp::pos st(goal.getPred()->getX(),goal.getPred()->getY(),goal.getPred()->getT());
+                        interpolate(&st,t,&p);
+                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred);
+                        nPred = tmp_node;
+                    }
                     return nPred;
-
                 }
             }
             for (int i = 0; i < dir; i++)

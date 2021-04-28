@@ -38,7 +38,8 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node3D* node)
     }
     //@TODO
     int id = Node2D(x,y,0,0,nullptr).setIdx(getWidthSize());
-    return m_map[id] > 250;
+    return m_map[id] > 250 && m_map[id+1] > 250
+           && m_map[id+m_width] > 250 && m_map[id+1+m_width] > 250;
     //return configurationTest(x, y, t);
 }
 
@@ -54,7 +55,8 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node2D *node)
     {
         return false;
     }
-    return m_map[node->getIdx()] > 250;
+    return m_map[node->getIdx()] > 250 && m_map[node->getIdx()+1] > 250
+        && m_map[node->getIdx()+m_width] > 250 && m_map[node->getIdx()+1+m_width] > 250;
 }
 
 bool HybridAStar::CollisionDetection::configurationTest(float x, float y, float t)

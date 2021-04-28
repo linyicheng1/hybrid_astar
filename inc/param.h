@@ -49,6 +49,6 @@ namespace param {
 /// [#] --- A movement cost penalty for change of direction (changing from primitives < 3 to primitives > 2)
     static const float penaltyCOD = 2.0;
     static const float dubinsShotDistance = 100;
-    static const float minRoadWidth = 2;
+    static const float minRoadWidth = 10;
 }
 #endif //HYBRID_ASTAR_PARAM_H

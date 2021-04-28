@@ -87,13 +87,15 @@ void BucketPrioQueue::initSqrIndices()
     //    std::cout << "BUCKETQUEUE Done with building the index arrays.\n";
 }
 
-DynamicVoronoi::DynamicVoronoi() {
+DynamicVoronoi::DynamicVoronoi()
+{
     sqrt2 = sqrt(2.0);
     data = NULL;
     gridMap = NULL;
 }
 
-DynamicVoronoi::~DynamicVoronoi() {
+DynamicVoronoi::~DynamicVoronoi()
+{
     if (data) {
         for (int x=0; x<sizeX; x++) delete[] data[x];
         delete[] data;
@@ -108,7 +110,8 @@ void DynamicVoronoi::initializeEmpty(int _sizeX, int _sizeY, bool initGridMap)
 {
     sizeX = _sizeX;
     sizeY = _sizeY;
-    if (data) {
+    if (data)
+    {
         for (int x=0; x<sizeX; x++) delete[] data[x];
         delete[] data;
     }
@@ -162,7 +165,8 @@ void DynamicVoronoi::initializeMap(int _sizeX, int _sizeY, bool** _gridMap)
                             int ny = y+dy;
                             if (ny<=0 || ny>=sizeY-1) continue;
 
-                            if (!gridMap[nx][ny]) {
+                            if (!gridMap[nx][ny])
+                            {
                                 isSurrounded = false;
                                 break;
                             }
@@ -329,7 +333,8 @@ void DynamicVoronoi::update(bool updateRealDist)
     }
 }
 
-float DynamicVoronoi::getDistance( int x, int y ) {
+float DynamicVoronoi::getDistance( int x, int y )
+{
     if( (x>0) && (x<sizeX) && (y>0) && (y<sizeY)) return data[x][y].dist;
     else return -INFINITY;
 }
