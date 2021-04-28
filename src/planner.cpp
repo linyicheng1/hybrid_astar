@@ -1,80 +1,45 @@
 #include "planner.h"
-#include <cstring>
 #include <iostream>
-#include <boost/heap/binomial_heap.hpp>
 using namespace HybridAStar;
 
-HybridAStar::Planner::Planner()
+Planner::Planner(unsigned char *data,int width,int height)
 {
-
+    m_map = new CollisionDetection(data, width ,height);
+    m_planer = new hybridAStar(m_map);
+    m_voronoi = new DynamicVoronoi();
+    bool** binMap;//二维数组，
+    binMap = new bool*[width];
+    for (int x = 0; x < width; x++) { binMap[x] = new bool[height]; }
+    for (int x = 0; x < width; ++x)
+    {
+        for (int y = 0; y < height; ++y)
+        {
+            binMap[x][y] = data[y * width + x] < 250;
+        }
+    }//转化为二值地图
+    m_voronoi->initializeMap(width,height,binMap);
+    m_voronoi->update();
 }
 
-void HybridAStar::Planner::plan()
+void Planner::plan()
 {
     if(!validGoal || !validStart)
     {
         std::cerr<<"error !!"<<" start state : "<<validStart<<" goal state : "<<validGoal<<std::endl;
         return;
     }
-    Node3D* nSolution = hybridAStar(true);
-}
-
-void HybridAStar::Planner::setMap(unsigned char *data, int length, int width, float resolution)
-{
-    m_length = length;
-    m_width = width;
-    m_inv_resolution = (int)(1.f / resolution);
-    int num = (length * m_inv_resolution) * (width * m_inv_resolution);
-    m_map = new unsigned char[num];
-    memcpy(m_map,data,num*sizeof(unsigned char));
-}
-
-// 0----> x
-// |
-// | y
-//
-float HybridAStar::Planner::getMapById(int index_x, int index_y)
-{
-    if(index_x > m_length*m_inv_resolution ||
-       index_y > m_width*m_inv_resolution ||
-       index_y < 0 ||
-       index_x <0)
-    {
-        return 0.f;
-    }
-    int id = index_x + index_y * m_length;
-    return m_map[id];
-}
-
-//  ----> x
-// |
-// | y
-//
-float HybridAStar::Planner::getMapByPos(float x, float y)
-{
-    int idx = (int)(x * (float)m_inv_resolution);
-    int idy = (int)(y * (float)m_inv_resolution);
-    return getMapById(idx,idy);
+    auto nSolution = m_planer->search_planer(m_start,m_goal,0.1);
+    m_smoother.tracePath(nSolution);
+    m_path = m_smoother.getPath();
+    m_smoother.smoothPath(*m_voronoi);
+    m_smooth_path = m_smoother.getPath();
 }
 
 
-struct CompareNodes {
-    /// Sorting 3D nodes by increasing C value - the total estimated cost
-    bool operator()(const Node3D* lhs, const Node3D* rhs) const {
-        return lhs->getC() > rhs->getC();
-    }
-    /// Sorting 2D nodes by increasing C value - the total estimated cost
-    bool operator()(const Node2D* lhs, const Node2D* rhs) const {
-        return lhs->getC() > rhs->getC();
-    }
-};
 
-HybridAStar::Node3D *HybridAStar::Planner::hybridAStar(bool reverse)
-{
-    int dir = reverse ? 6 : 3;
-    int iterations = 0;
-    typedef boost::heap::binomial_heap<Node3D*,
-            boost::heap::compare<CompareNodes>
-    > priorityQueue;
-    priorityQueue open;
-}
+
+
+
+
+
+

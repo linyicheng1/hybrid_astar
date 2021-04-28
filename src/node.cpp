@@ -73,13 +73,12 @@ Node3D* Node3D::createSuccessor(const int i,float inv_scale)
         ySucc = y + dx[i] * sin(t) * inv_scale + dy[i] * cos(t) * inv_scale;
         tSucc = normalizeHeadingRad(t + dt[i]);
     }
-        // backwards
+    // backwards
     else {//后向 Successor
         xSucc = x - dx[i - 3] * cos(t) * inv_scale - dy[i - 3] * sin(t) * inv_scale;
         ySucc = y - dx[i - 3] * sin(t) * inv_scale + dy[i - 3] * cos(t) * inv_scale;
         tSucc = normalizeHeadingRad(t - dt[i - 3]);
     }
-
     return new Node3D(xSucc, ySucc, tSucc, g, 0, this, i);
 }
 

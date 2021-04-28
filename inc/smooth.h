@@ -122,13 +122,13 @@ namespace HybridAStar
         /// falloff rate for the voronoi field
         float alpha = 0.1;
         /// weight for the obstacle term
-        float wObstacle = 0.2;
+        float wObstacle = 0.1;
         /// weight for the voronoi term
-        float wVoronoi = 0.2;
+        float wVoronoi = 0;
         /// weight for the curvature term
         float wCurvature = 0;
         /// weight for the smoothness term
-        float wSmoothness = 0.2;
+        float wSmoothness = 0.5;
 
         // 描述地图中拓扑结构的voronoi diagram
         /// voronoi diagram describing the topology of the map

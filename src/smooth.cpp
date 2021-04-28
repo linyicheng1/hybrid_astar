@@ -5,15 +5,21 @@ using namespace HybridAStar;
 //                                     CUSP DETECTION
 //###################################################
 //交点检测函数
-inline bool isCusp(std::vector<Node3D> path, int i) {
+inline bool isCusp(std::vector<Node3D> path, int i)
+{
+    if(path[i].getPrim() < 0)
+    {
+        return true;
+    }
     bool revim2 = path[i - 2].getPrim() > 3 ? true : false;
     bool revim1 = path[i - 1].getPrim() > 3 ? true : false;
     bool revi   = path[i].getPrim() > 3 ? true : false;
     bool revip1 = path[i + 1].getPrim() > 3 ? true : false;
     //  bool revip2 = path[i + 2].getPrim() > 3 ? true : false;
-
-    if (revim2 != revim1 || revim1 != revi || revi != revip1) { return true; }
-
+    if (revim2 != revim1 || revim1 != revi || revi != revip1)
+    {
+        return true;
+    }
     return false;
 }
 //###################################################
@@ -54,7 +60,7 @@ void Smoother::smoothPath(DynamicVoronoi& voronoi)
 
             // the following points shall not be smoothed
             // keep these points fixed if they are a cusp point or adjacent to one
-            //if (isCusp(newPath, i)) { continue; }//若为交点，不做平滑
+            if (isCusp(newPath, i)) { continue; }//若为交点，不做平滑
 
             correction = correction - obstacleTerm(xi);
             if (!isOnGrid(xi + correction))

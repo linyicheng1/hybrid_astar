@@ -83,7 +83,7 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
             }
             // shot
             float current_distance = (nPred->getX() - goal.getX()) * (nPred->getX() - goal.getX()) + (nPred->getY() - goal.getY()) * (nPred->getY() - goal.getY());
-            if(current_distance < 0.25 * distance)
+            if(current_distance < 0.1 * distance)
             {
                 m_RS_path = m_RS.plan(ReedsShepp::pos(nPred->getX(),nPred->getY(),nPred->getT()),
                                       ReedsShepp::pos(goal.getX(),goal.getY(),goal.getT()));
@@ -98,13 +98,13 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                         ReedsShepp::pos p;
                         ReedsShepp::pos st(goal.getPred()->getX(),goal.getPred()->getY(),goal.getPred()->getT());
                         interpolate(&st,t,&p);
-                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred);
+                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred,-1);
                         nPred = tmp_node;
                     }
                     return nPred;
                 }
             }
-            for (int i = 0; i < dir; i++)
+            for (int i = 0; i < 3; i++)
             {//每个方向都搜索
                 nSucc = nPred->createSuccessor(i,1/scale);//找到下一个点
                 iSucc = nSucc->setIdx(m_map->getWidthSize(), m_map->getHeightSize());//索引值
@@ -129,13 +129,12 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                                 delete nSucc;//如果下一个点仍在相同的cell、并且cost变大，那继续找
                                 continue;
                             }
-                                // if successor is in the same cell and the C value is lower, set predecessor to predecessor of predecessor
-                                // 如果下一节点仍在相同的cell, 但是代价值要小，则用当前successor替代前一个节点（这里仅更改指针，数据留在内存中）
+                            // if successor is in the same cell and the C value is lower, set predecessor to predecessor of predecessor
+                            // 如果下一节点仍在相同的cell, 但是代价值要小，则用当前successor替代前一个节点（这里仅更改指针，数据留在内存中）
                             else if (iPred == iSucc && nSucc->getC() <= nPred->getC() + param::tieBreaker)
                             {
                                 nSucc->setPred(nPred->getPred());//如果下一个点仍在相同的cell、并且cost变小，成功
                             }
-
                             if (nSucc->getPred() == nSucc)
                             {
                                 std::cout << "looping";//给出原地踏步的提示
