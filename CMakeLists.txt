@@ -15,6 +15,8 @@ add_library(
         src/hybridAStar.cpp
         src/CollisionDetection.cpp
         src/ReedsSheppPath.cpp
+        src/smooth.cpp
+        src/dynamicVoronoi.cpp
 )
 
 add_executable(hybrid_astar main.cpp)
@@ -32,3 +34,8 @@ target_link_libraries(test_RS planner ${OpenCV_LIBS})
 add_executable(test_hybrid_aStar test/test_hybrid_aStar.cpp)
 target_link_libraries(test_hybrid_aStar planner ${OpenCV_LIBS})
 
+add_executable(test_smooth test/test_smooth.cpp)
+target_link_libraries(test_smooth planner ${OpenCV_LIBS})
+
+add_executable(test_voronoi test/test_dynamicVoronoi.cpp)
+target_link_libraries(test_voronoi planner ${OpenCV_LIBS})

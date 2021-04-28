@@ -8,12 +8,12 @@ int main()
 {
     cv::Mat map = cv::imread("../test/map.png",cv::IMREAD_GRAYSCALE);
     int inv_resolution = 1;
-    cv::resize(map,map,cv::Size(map.cols/50,map.rows/50));
+    cv::resize(map,map,cv::Size(map.cols/25,map.rows/25));
     cv::Mat raw = map.clone();
     CollisionDetection map_data(map.data,map.cols ,map.rows );
     hybridAStar planer(&map_data);
-    Node3D start(4,4,0,0,0, nullptr);
-    Node3D goal(130,125,0,0,0, nullptr);
+    Node3D start(8,8,2,0,0, nullptr);
+    Node3D goal(260,180,0,0,0, nullptr);
 //    for(int i = -1;i < 2; i ++)
 //    {
 //        for(int j = -1;j < 2;j ++)

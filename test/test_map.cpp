@@ -7,7 +7,7 @@ using namespace HybridAStar;
 int main()
 {
     cv::Mat map = cv::imread("../test/map.png",cv::IMREAD_GRAYSCALE);
-    CollisionDetection map_data(map.data,map.cols / 100 ,map.rows / 100,100);
+    CollisionDetection map_data(map.data,map.cols ,map.rows);
 
     for(int j = 0;j < map.rows;j += 50)
     {

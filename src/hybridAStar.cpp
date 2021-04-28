@@ -253,17 +253,17 @@ void hybridAStar::updateH(Node3D &start, const Node3D &goal)
     float s_y = start.getY();
     float g_x = goal.getX();
     float g_y = goal.getY();
-    // 2、A *
-    Node2D start2d((int)s_x, (int)s_y, 0, 0, nullptr);
-    Node2D goal2d((int)g_x, (int)g_y, 0, 0, nullptr);
-    float G = aStar(start2d,goal2d,0.1);
-    // 3、
-    twoDoffset = sqrt( ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) *
-                       ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) +
-                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y))) *
-                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y)))
-    );
-    twoDCost = (G - twoDoffset);
+//    // 2、A *
+//    Node2D start2d((int)s_x, (int)s_y, 0, 0, nullptr);
+//    Node2D goal2d((int)g_x, (int)g_y, 0, 0, nullptr);
+//    float G = aStar(start2d,goal2d,0.1);
+//    // 3、
+//    twoDoffset = sqrt( ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) *
+//                       ((s_x - (float)((int)s_x)) - (g_x - (float)((int)g_x))) +
+//                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y))) *
+//                       ((s_y - (float)((int)s_y)) - (g_y - (float)((int)g_y)))
+//    );
+//    twoDCost = (G - twoDoffset);
     start.setH(std::max(reedsSheppCost, twoDCost));
 }
 
