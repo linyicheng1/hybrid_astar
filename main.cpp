@@ -22,6 +22,7 @@ int main()
         int y = (int)pt.getY();
         map.at<uchar>(y, x) = 120;
     }
+    int last_x = -1, last_y = -1;
     for(auto pt:smooth_path)
     {
         int x = (int)pt.getX();
@@ -33,7 +34,14 @@ int main()
             map.at<uchar>(y+1, x) = 0;
             map.at<uchar>(y+1, x+1) = 0;
         }
+        if(last_x != -1 && last_y != -1)
+        {
+            cv::line(map,cv::Point(last_x,last_y),cv::Point(x,y),cv::Scalar(0,0,0));
+        }
+        last_x = x;
+        last_y = y;
     }
+    cv::imwrite("../pic/final.png",map);
     cv::resize(map,map,cv::Size(map.cols*3,map.rows*3));
     cv::imshow("result",map);
     cv::waitKey(0);
