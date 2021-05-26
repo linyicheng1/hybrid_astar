@@ -3,6 +3,8 @@
 #include <iostream>
 
 using namespace  HybridAStar;
+#define PI 3.14159
+#define PI_2 PI*2
 
 struct CompareNodes {
     /// Sorting 3D nodes by increasing C value - the total estimated cost
@@ -34,6 +36,7 @@ hybridAStar::~hybridAStar()
  */
 HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node3D& goal,float scale)
 {
+    //
     int iPred, iSucc;
     float newG;
     for (int i = 0; i < m_map->getSize()*param::headings; ++i)
@@ -83,7 +86,7 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
             }
             // shot
             float current_distance = (nPred->getX() - goal.getX()) * (nPred->getX() - goal.getX()) + (nPred->getY() - goal.getY()) * (nPred->getY() - goal.getY());
-            if(current_distance < 0.1 * distance)
+            if(current_distance < 0.5 * distance)
             {
                 m_RS_path = m_RS.plan(ReedsShepp::pos(nPred->getX(),nPred->getY(),nPred->getT()),
                                       ReedsShepp::pos(goal.getX(),goal.getY(),goal.getT()));
@@ -127,8 +130,33 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                             prim = -2;
                             last_fix = false;
                         }
-                        auto tmp_node = new Node3D(p.x,p.y,p.angle,0,0,nPred,prim);
-                        nPred = tmp_node;
+                        // dir
+                        ReedsShepp::pos p1;
+                        {
+                            float t1 = (float)(i+0.1) / 500.f;
+                            interpolate(&st,t1,&p1);
+                        }
+                        float angle = atan2(p1.y - p.y,p1.x - p.x);
+                        if(angle < -PI)
+                            angle += PI_2;
+                        else if(angle > PI)
+                            angle -= PI_2;
+
+                        float angle2 = p.angle;
+                        if(angle2 < -PI)
+                            angle2 += PI_2;
+                        else if(angle2 > PI)
+                            angle2 -= PI_2;
+                        if(fabs(angle-angle2)>0.2)
+                        {// inv
+                            auto tmp_node = new Node3D(p.x,p.y,p.angle,-1,-1,nPred,prim);
+                            nPred = tmp_node;
+                        }
+                        else
+                        {
+                            auto tmp_node = new Node3D(p.x,p.y,p.angle,1,1,nPred,prim);
+                            nPred = tmp_node;
+                        }
                     }
                     return nPred;
                 }

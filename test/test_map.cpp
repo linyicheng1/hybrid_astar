@@ -9,11 +9,11 @@ int main()
     cv::Mat map = cv::imread("../test/map.png",cv::IMREAD_GRAYSCALE);
     CollisionDetection map_data(map.data,map.cols ,map.rows);
 
-    for(int j = 0;j < map.rows;j += 50)
+    for(int x = 0;x < map.rows;x += 50)
     {
-        for(int i = 0;i < map.cols;i += 50)
+        for(int y = 0;y < map.cols;y += 50)
         {
-            auto node = new Node2D(i,j,0,0, nullptr);
+            auto node = new Node2D(x,y,0,0, nullptr);
             node->setIdx(map.cols);
             if(map_data.isTraversable(node))
             {

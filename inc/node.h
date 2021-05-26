@@ -54,7 +54,7 @@ public:
     /// set the cost-to-come (heuristic value)
     void setH(const float& h) { this->h = h; }
     /// set and get the index of the node in the 2D array
-    int setIdx(int width) { this->idx = y * width + x; return idx;}
+    int setIdx(int width) { this->idx = x * width + y; return idx;}
     /// open the node
     void open() { o = true; c = false; }
     /// close the node
@@ -238,7 +238,6 @@ private:
         /// the predecessor pointer
          Node3D* pred;//祖先节点
     };
-
 }
 
 #endif //HYBRID_ASTAR_NODE_H
