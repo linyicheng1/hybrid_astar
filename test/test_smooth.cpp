@@ -23,8 +23,8 @@ int main()
     {
         int x = (int)tmp_show->getX()*inv_resolution;
         int y = (int)tmp_show->getY()*inv_resolution;
-        //map.at<uchar>(y, x) = 0;
-        if(raw.at<uchar>(y, x) < 250)
+        map.at<uchar>(x, y) = 125;
+        if(raw.at<uchar>(x, y) < 250)
         {
             std::cerr<<" error !! "<<(int)raw.at<uchar>(y, x)<<" pos: x "<<x<<" y "<<y<<" angle "<<tmp_show->getT()<<std::endl;
         }
@@ -34,21 +34,21 @@ int main()
         {
             int next_x = (int)tmp_show->getX()*inv_resolution;
             int next_y = (int)tmp_show->getY()*inv_resolution;
-            cv::line(map,cv::Point(x,y),cv::Point(next_x,next_y),cv::Scalar(0,0,0));
+            //cv::line(map,cv::Point(y,x),cv::Point(next_y,next_x),cv::Scalar(0,0,0));
         }
     }
     DynamicVoronoi voronoi;
     bool** binMap;//二维数组，
-    binMap = new bool*[map.cols];
-    for (int x = 0; x < map.cols; x++) { binMap[x] = new bool[map.rows]; }
-    for (int x = 0; x < map.cols; ++x)
+    binMap = new bool*[map.rows];
+    for (int x = 0; x < map.rows; x++) { binMap[x] = new bool[map.cols]; }
+    for (int x = 0; x < map.rows; ++x)
     {
-        for (int y = 0; y < map.rows; ++y)
+        for (int y = 0; y < map.cols; ++y)
         {
-            binMap[x][y] = raw.data[y * map.cols + x] < 250;
+            binMap[x][y] = raw.data[y + x * map.cols] < 250;
         }
     }//转化为二值地图
-    voronoi.initializeMap(map.cols,map.rows,binMap);
+    voronoi.initializeMap(map.rows,map.cols,binMap);
     voronoi.update();
     Smoother smoother;
     smoother.tracePath(nSolution);
@@ -58,9 +58,9 @@ int main()
     {
         int x = (int)pt.getX();
         int y = (int)pt.getY();
-        map.at<uchar>(y, x) = 0;
+        map.at<uchar>(x, y) = 0;
     }
-    cv::imwrite("../pic/smooth.png",map);
+    //cv::imwrite("../pic/smooth.png",map);
     cv::imshow("result",map);
     cv::waitKey(0);
 }

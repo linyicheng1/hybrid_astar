@@ -36,6 +36,9 @@ hybridAStar::~hybridAStar()
  */
 HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node3D& goal,float scale)
 {
+    int goal_id = goal.setIdx(m_map->getWidthSize(), m_map->getHeightSize());
+    if(!m_map->isTraversable(&goal))
+        return nullptr;
     //
     int iPred, iSucc;
     float newG;
@@ -219,6 +222,9 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
  */
 float HybridAStar::hybridAStar::aStar(Node2D &start, Node2D &goal, float scale)
 {
+    goal.setIdx(m_map->getWidthSize());
+    if(!m_map->isTraversable(&goal))
+        return 1000;
     int iPred, iSucc;
     float newG;
     for (int i = 0; i < m_map->getSize(); ++i)

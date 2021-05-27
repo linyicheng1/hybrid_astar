@@ -103,8 +103,8 @@ namespace HybridAStar
 
         /// a boolean test, whether vector is on the grid or not
         bool isOnGrid(Vector2D vec) {
-            if (vec.getX() >= 0 && vec.getX() < width &&
-                vec.getY() >= 0 && vec.getY() < height) {
+            if (vec.getX() >= 0 && vec.getX() < height &&
+                vec.getY() >= 0 && vec.getY() < width) {
                 return true;
             }
             return false;

@@ -14,7 +14,7 @@ int main()
     hybridAStar planer(&map_data);
 
     int start_angle = 0,end_angle = 0;
-    int end_x = 8; int end_y = 138;
+    int end_x = 96; int end_y = 376;
     while (1)
     {
         cv::Mat show = map.clone();
@@ -65,7 +65,7 @@ int main()
         cv::createTrackbar("end x","result",&end_x,800);
         cv::createTrackbar("end y","result",&end_y,800);
         cv::imshow("result",show);
-        cv::waitKey(10);
+        cv::waitKey(100);
     }
 }
 

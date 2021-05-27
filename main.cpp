@@ -5,7 +5,7 @@ using namespace HybridAStar;
 
 int main()
 {
-    int start_x = 8,start_y = 8,end_x=8,end_y=138;
+    int start_x = (int)(7.34f*4),start_y = (int)(3.59*4),end_x=7*4,end_y=34*4;
     int start_angle = 0,end_angle = 0;
     cv::Mat map = cv::imread("../test/map.png",cv::IMREAD_GRAYSCALE);
     cv::resize(map,map,cv::Size(map.cols/25,map.rows/25));
@@ -13,8 +13,8 @@ int main()
     while (1)
     {
         cv::Mat show = map.clone();
-        Node3D start(start_x,start_y,(float)start_angle*0.1+1.708f,0,0, nullptr);
-        Node3D goal(end_x,end_y,(float)end_angle*0.1+1.708f,0,0, nullptr);
+        Node3D start(start_x,start_y,(float)start_angle*0.1+1.5708,0,0, nullptr);
+        Node3D goal(end_x,end_y,(float)end_angle*0.1+1.5708,0,0, nullptr);
         planner.setStart(start);
         planner.setGoal(goal);
         planner.plan();
@@ -43,11 +43,13 @@ int main()
             {
                 float dx = x - last_x;
                 float dy = y - last_y;
-                //cv::line(map,cv::Point(last_x-2*dx,last_y-2*dy),cv::Point(x,y),cv::Scalar(0,0,0));
+                cv::line(show,cv::Point(last_y-2*dy,last_x-2*dx),cv::Point(y,x),cv::Scalar(0,0,0));
             }
             last_x = x;
             last_y = y;
         }
+        cv::circle(show,cv::Point(start_y,start_x),3,cv::Scalar(0,0,0));
+        cv::circle(show,cv::Point(end_y,end_x),3,cv::Scalar(0,0,0));
         cv::createTrackbar("start","result",&start_angle,100);
         cv::createTrackbar("end","result",&end_angle,100);
         cv::createTrackbar("end x","result",&end_x,800);

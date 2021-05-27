@@ -8,16 +8,16 @@ Planner::Planner(unsigned char *data,int width,int height)
     m_planer = new hybridAStar(m_map);
     m_voronoi = new DynamicVoronoi();
     bool** binMap;//二维数组，
-    binMap = new bool*[width];
-    for (int x = 0; x < width; x++) { binMap[x] = new bool[height]; }
-    for (int x = 0; x < width; ++x)
+    binMap = new bool*[height];
+    for (int x = 0; x < height; x++) { binMap[x] = new bool[width]; }
+    for (int x = 0; x < height; ++x)
     {
-        for (int y = 0; y < height; ++y)
+        for (int y = 0; y < width; ++y)
         {
-            binMap[x][y] = data[y * width + x] < 250;
+            binMap[x][y] = data[y + x * width] < 250;
         }
     }//转化为二值地图
-    m_voronoi->initializeMap(width,height,binMap);
+    m_voronoi->initializeMap(height,width,binMap);
     m_voronoi->update();
 }
 

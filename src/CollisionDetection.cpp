@@ -32,7 +32,7 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node3D* node)
     float y;
     float t;
     getConfiguration(node, x, y, t);
-    if(x > m_width  || x < 0 || y > m_height  || y <0)
+    if(x > m_height  || x < 0 || y > m_width  || y <0)
     {
         return false;
     }
@@ -51,7 +51,7 @@ bool HybridAStar::CollisionDetection::isTraversable(const Node2D *node)
     float t;
     // assign values to the configuration
     getConfiguration(node, x, y, t);
-    if(x > m_width  || x < 0 || y > m_height  || y <0)
+    if(x > m_height  || x < 0 || y > m_width  || y <0)
     {
         return false;
     }
@@ -79,7 +79,7 @@ bool HybridAStar::CollisionDetection::configurationTest(float x, float y, float 
         cY = (Y + collisionLookup[idx].pos[i].y);
 
         // make sure the configuration coordinates are actually on the grid
-        if (cX >= 0 && (unsigned int)cX < m_width && cY >= 0 && (unsigned int)cY < m_height)
+        if (cX >= 0 && (unsigned int)cX < m_height && cY >= 0 && (unsigned int)cY < m_width)
         {
             if (m_map[cY * m_width + cX] < 250)
             {

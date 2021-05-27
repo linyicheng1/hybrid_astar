@@ -19,7 +19,7 @@ const int Node2D::dy[] = { 0, 1, 1, 1, 0, -1, -1, -1 };
 //判断点是否在网络内
 bool Node2D::isOnGrid(const int width, const int height) const
 {
-    return  x >= 0 && x < width && y >= 0 && y < height;
+    return  x >= 0 && x < height && y >= 0 && y < width;
 }
 
 //创建successor
