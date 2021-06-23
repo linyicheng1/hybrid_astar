@@ -54,6 +54,7 @@ void Smoother::smoothPath(DynamicVoronoi& voronoi)
         // choose the first three nodes of the path
         for (int i = 2; i < pathLength - 2; ++i)
         {
+            float H = newPath[i].getH();
             //后面2个点，当前点，前面2个点
             Vector2D xim2(newPath[i - 2].getX(), newPath[i - 2].getY());
             Vector2D xim1(newPath[i - 1].getX(), newPath[i - 1].getY());
@@ -90,17 +91,40 @@ void Smoother::smoothPath(DynamicVoronoi& voronoi)
             newPath[i].setX(xi.getX());
             newPath[i].setY(xi.getY());
             Vector2D Dxi = xi - xim1;
-            newPath[i - 1].setT(std::atan2(Dxi.getY(), Dxi.getX()));
+            float angle = atanf(  -Dxi.getX() / Dxi.getY());
+            if(Dxi.getX() < 0)
+            {
+                if(angle < 0)
+                {
+                    angle += 3.14159;
+                }
+            }
+            else
+            {
+                if(angle > 0)
+                {
+                   angle -= 3.14159;
+                }
+            }
+            if(fabsf(H + 1) > 0.01)
+            {
+                angle -= 1.5708f;
+            }
+            else
+            {
+                angle +=  1.5708f;
+            }
+            newPath[i - 1].setT(angle);
         }
         iterations++;
     }
-    float sum = 0;
-    for(int i =0;i < path.size();i ++)
-    {
-        sum += (path.data()->getX() - newPath.data()->getX()) * (path.data()->getX() - newPath.data()->getX())
-             + (path.data()->getY() - newPath.data()->getY()) * (path.data()->getY() - newPath.data()->getY());
-    }
-    std::cout<<"smooth sum: "<<sum<<std::endl;
+//    float sum = 0;
+//    for(int i =0;i < path.size();i ++)
+//    {
+//        sum += (path.data()->getX() - newPath.data()->getX()) * (path.data()->getX() - newPath.data()->getX())
+//             + (path.data()->getY() - newPath.data()->getY()) * (path.data()->getY() - newPath.data()->getY());
+//    }
+    //std::cout<<"smooth sum: "<<sum<<std::endl;
     path = newPath;
 }
 

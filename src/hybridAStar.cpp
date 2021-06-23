@@ -110,7 +110,7 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                     int seg_num = 0;
                     auto seg_length = (float)abs(m_RS_path.length_[0]);
                     bool last_fix = false;
-                    for(int i = 0;i < m_RS_path.length()*2;i ++)
+                    for(int i = 1;i < m_RS_path.length()*2-1;i ++)
                     {
                         int prim = -1;
                         float t = (float)i / (m_RS_path.length()*2);
@@ -136,32 +136,41 @@ HybridAStar::Node3D *HybridAStar::hybridAStar::search_planer(Node3D& start, Node
                         // dir
                         ReedsShepp::pos p1;
                         {
-                            float t1 = (float)(i+0.1) / 500.f;
+                            float t1 = (float)(i+0.1) / (m_RS_path.length()*2);
                             interpolate(&st,t1,&p1);
                         }
-                        float angle = atan2(p1.y - p.y,p1.x - p.x);
-                        if(angle < -PI)
-                            angle += PI_2;
-                        else if(angle > PI)
-                            angle -= PI_2;
+                        float d_x = (-p1.x + p.x );
+                        float angle = atan(d_x / (p1.y - p.y));
+                        if(d_x > 0)
+                        {
+                            if(angle < 0)
+                            {
+                                angle += 3.14159;
+                            }
+                        }
+                        else
+                        {
+                            if(angle > 0)
+                            {
+                                angle -= 3.14159;
+                            }
+                        }
 
-                        float angle2 = p.angle;
-                        if(angle2 < -PI)
-                            angle2 += PI_2;
-                        else if(angle2 > PI)
-                            angle2 -= PI_2;
+                        float angle2 = p.angle - 1.5708f;
+
                         if(fabs(angle-angle2)>0.2)
                         {// inv
-                            auto tmp_node = new Node3D(p.x,p.y,p.angle,-1,-1,nPred,prim);
+                            auto tmp_node = new Node3D(p.x,p.y,angle-1.5708f,-1,-1,nPred,prim);
                             nPred = tmp_node;
                         }
                         else
                         {
-                            auto tmp_node = new Node3D(p.x,p.y,p.angle,1,1,nPred,prim);
+                            auto tmp_node = new Node3D(p.x,p.y,angle+1.5708f,1,1,nPred,prim);
                             nPred = tmp_node;
                         }
                     }
-                    return nPred;
+                    goal.setPred(nPred);
+                    return &goal;
                 }
             }
             for (int i = 0; i < 6; i++)

@@ -24,6 +24,24 @@ HybridAStar::CollisionDetection::CollisionDetection(
 {
     m_map = new unsigned char[height*width];
     memcpy(m_map,data,height*width*sizeof(unsigned char));
+    for(int i = 0;i < height*width;i ++)
+    {
+        if(m_map[i] < 20)
+        {
+            m_map[i] = 0;
+            int n = 2;
+//            for(int j = -n;j <= n;j ++)
+//            {
+//                for(int k = -n;k <= n;k ++)
+//                {
+//                    int id = i + k + width*j;
+//                    id = id>0?id:0;
+//                    id = id<height*width?id:height*width;
+//                    m_map[id] = 0;
+//                }
+//            }
+        }
+    }
 }
 
 bool HybridAStar::CollisionDetection::isTraversable(const Node3D* node)
